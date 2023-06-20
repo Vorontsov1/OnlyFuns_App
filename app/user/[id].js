@@ -3,30 +3,34 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "expo-router";
 import UserProfileHeader from "../../src/components/UserProfileHeader";
 import { FontAwesome5 } from "@expo/vector-icons";
-import posts from "../../assets/data/posts";
 import Post from "../../src/components/Post";
 import colors from "../../assets/colors";
 import { DataStore } from "aws-amplify";
-import { User } from "../../src/models";
+import { User, Post as PostModel } from "../../src/models";
 
 
 
 
 const ProfilePage = () => {
   const [user, setUser] = useState();
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [posts, setPost] = useState([]);
+  const [isSubscribed, setIsSubscribed] = useState(true);
 
 
     const { id } = useSearchParams();
 
   useEffect(() => {
-     DataStore.query(User, id).then(setUser);
+    DataStore.query(User, id).then(setUser);
+    DataStore.query(PostModel ).then(setPost);
+   
    },[id])
   // const user = users.find((user) => user.id === id);
 
   if (!user) {
     return <Text>User not found</Text>;
   }
+console.log(JSON.stringify(user, null, 2));
+
   if (!isSubscribed) {
     return (
       <View>
@@ -63,7 +67,7 @@ const ProfilePage = () => {
   return (
       <FlatList
         data={posts}
-        renderItem={({ item }) => <Post post={item} />}
+        renderItem={({ item }) => <Post post={item} user={user} />}
         ListHeaderComponent={() => (
           <UserProfileHeader
             user={user}

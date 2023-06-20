@@ -3,7 +3,7 @@ import { Entypo, AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import colors from '../../assets/colors';
 
 
-const Post = ({post}) => {
+const Post = ({post, user}) => {
   return (
     <View style={{ marginVertical: 15 }}>
       <View
@@ -14,7 +14,7 @@ const Post = ({post}) => {
         }}
       >
         <Image
-          src={post.User.avatar}
+          src={user?.avatar}
           style={{
             width: 50,
             aspectRatio: 1,
@@ -24,11 +24,9 @@ const Post = ({post}) => {
         />
         <View>
           <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 3 }}>
-            {post.User.name}
+            {user?.name}
           </Text>
-          <Text style={{ color: "gray", fontSize: 14 }}>
-            @{post.User.handle}
-          </Text>
+          <Text style={{ color: "gray", fontSize: 14 }}>@{user?.handle}</Text>
         </View>
 
         <View
@@ -46,7 +44,7 @@ const Post = ({post}) => {
       </View>
 
       <Text style={{ margin: 10, lineHeight: 18 }}>{post.text}</Text>
-      <Image src={post.image} style={{ width: "100%", aspectRatio: 1 }} />
+      {post.image && <Image src={post.image} style={{ width: "100%", aspectRatio: 1 }} />}
 
       <View style={{ margin: 10, flexDirection: "row", alignItems: "center" }}>
         <AntDesign

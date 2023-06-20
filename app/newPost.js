@@ -1,22 +1,43 @@
-import { View, Text, SafeAreaView, TextInput, Button, Image } from "react-native";
-import {useState} from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TextInput,
+  Button,
+  Image,
+} from "react-native";
+import { useState } from "react";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker"; 
-import { useRouter } from 'expo-router';
-
+import * as ImagePicker from "expo-image-picker";
+import { useRouter } from "expo-router";
+import { DataStore } from "aws-amplify";
+import { Post } from "../src/models";
+import { useAuthenticator } from "@aws-amplify/ui-react-native";
 
 const NewPost = () => {
-  const [text, setText] = useState('');
-    const [image, setImage] = useState(null);
-const router = useRouter();
+  const [text, setText] = useState("");
+  const [image, setImage] = useState(null);
 
+  const { user } = useAuthenticator();
 
-  const onPost = () => {
-    console.log('Post', text);
-    setText('');
-  }
-  
- 
+  const router = useRouter();
+
+  const onPost = async () => {
+    console.warn("Post: ", text);
+    // const imageKey = await uploadImage();
+
+     await DataStore.save(
+       new Post({
+         text,
+         likes: 0,
+         userID: user.attributes.sub,
+        //  image: imageKey,
+       })
+     );
+
+    setText("");
+  };
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -30,11 +51,13 @@ const router = useRouter();
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
-  }; 
+  };
 
   return (
     <SafeAreaView style={{ margin: 10 }}>
-      <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 20}}>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}
+      >
         <Ionicons
           onPress={() => router.back()}
           name="arrow-back"
@@ -42,7 +65,7 @@ const router = useRouter();
           color="grey"
           style={{ marginRight: 10 }}
         />
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>New post</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 20 }}>New post</Text>
       </View>
 
       <TextInput
@@ -60,7 +83,7 @@ const router = useRouter();
       {image && (
         <Image
           source={{ uri: image }}
-          style={{ width: "100%",  aspectRatio: 1 }}
+          style={{ width: "100%", aspectRatio: 1 }}
         />
       )}
 
