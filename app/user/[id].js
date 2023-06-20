@@ -13,17 +13,17 @@ import { User, Post as PostModel } from "../../src/models";
 
 const ProfilePage = () => {
   const [user, setUser] = useState();
-  const [posts, setPost] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(true);
 
 
     const { id } = useSearchParams();
 
-  useEffect(() => {
-    DataStore.query(User, id).then(setUser);
-    DataStore.query(PostModel ).then(setPost);
-   
-   },[id])
+   useEffect(() => {
+     DataStore.query(User, id).then(setUser);
+     DataStore.query(PostModel).then(setPosts);
+   }, [id]);
+
   // const user = users.find((user) => user.id === id);
 
   if (!user) {
@@ -67,7 +67,7 @@ console.log(JSON.stringify(user, null, 2));
   return (
       <FlatList
         data={posts}
-        renderItem={({ item }) => <Post post={item} user={user} />}
+        renderItem={({ item }) => <Post post={item} />}
         ListHeaderComponent={() => (
           <UserProfileHeader
             user={user}

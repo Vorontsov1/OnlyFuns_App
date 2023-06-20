@@ -1,9 +1,21 @@
 import { View, Text, Image } from 'react-native';
 import { Entypo, AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import colors from '../../assets/colors';
+import { useState, useEffect } from 'react';
+import { DataStore } from 'aws-amplify';
+import { User } from '../models';
 
 
-const Post = ({post, user}) => {
+
+const Post = ({ post }) => {
+  const [user, setUser] = useState();
+
+  useEffect(() => { 
+    DataStore.query(User, post.userID).then(setUser);
+  }, [])
+
+
+
   return (
     <View style={{ marginVertical: 15 }}>
       <View
