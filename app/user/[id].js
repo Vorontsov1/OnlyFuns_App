@@ -1,28 +1,23 @@
-import { View, Text } from 'react-native';
-import { useRouter, useSearchParams } from 'expo-router';
-import users from '../../assets/data/users';
+import { Text } from "react-native";
+import { useState } from 'react';
+import { useSearchParams } from "expo-router";
+import users from "../../assets/data/users";
+import UserProfileHeader from "../../src/components/UserProfileHeader";
 
 const ProfilePage = () => {
-  const router = useRouter();
   const { id } = useSearchParams();
+   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  const user = users.find(user => user.id === id);
+  const user = users.find((user) => user.id === id);
 
-  if (!user) { 
-    return (
-      <View style={{marginTop: 100}}>
-        <Text>User not found</Text>
-      </View>
-    ); 
-  
+  if (!user) {
+    return <Text>User not found</Text>;
   }
 
-  return (
-    <View style={{marginTop: 100}}>
-          <Text>Profile Page: {user.name}</Text>
-          <Text onPress={() => router.back()}>Go back</Text>
-    </View>
-  );
-}
+  return <UserProfileHeader
+    user={user}
+    isSubscribed={isSubscribed}
+    setIsSubscribed={setIsSubscribed} />;
+};
 
 export default ProfilePage;
