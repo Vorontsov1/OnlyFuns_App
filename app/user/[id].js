@@ -1,20 +1,28 @@
 import { Text, View, FlatList } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "expo-router";
-import users from "../../assets/data/users";
 import UserProfileHeader from "../../src/components/UserProfileHeader";
 import { FontAwesome5 } from "@expo/vector-icons";
 import posts from "../../assets/data/posts";
 import Post from "../../src/components/Post";
 import colors from "../../assets/colors";
+import { DataStore } from "aws-amplify";
+import { User } from "../../src/models";
+
 
 
 
 const ProfilePage = () => {
-  const { id } = useSearchParams();
+  const [user, setUser] = useState();
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  const user = users.find((user) => user.id === id);
+
+    const { id } = useSearchParams();
+
+  useEffect(() => {
+     DataStore.query(User, id).then(setUser);
+   },[id])
+  // const user = users.find((user) => user.id === id);
 
   if (!user) {
     return <Text>User not found</Text>;
