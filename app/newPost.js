@@ -21,7 +21,7 @@ const router = useRouter();
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      allowsEditing: false,
       quality: 1,
     });
 
@@ -60,7 +60,7 @@ const router = useRouter();
       {image && (
         <Image
           source={{ uri: image }}
-          style={{ width: "100%", height: undefined, aspectRatio: 1 }}
+          style={{ width: "100%",  aspectRatio: 1 }}
         />
       )}
 
