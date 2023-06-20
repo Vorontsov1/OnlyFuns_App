@@ -15,7 +15,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import colors from "../../assets/colors";
-import { useState } from "react";
+
 
 const UserProfileHeader = ({ user, isSubscribed, setIsSubscribed }) => {
   const router = useRouter();
