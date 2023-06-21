@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3onlyfunsstoragefd929a4d",
+  "bucketName": "onlyfuns-storage-fd929a4d",
+  "policyUUID": "d2bb08b7",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}
